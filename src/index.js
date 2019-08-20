@@ -7,11 +7,6 @@ import Navigation from './components/Navigation';
 import Firebase, { FirebaseContext } from './sharedComponent/Firebase';
 import App from './App';
 
-const App1 = () => (
-  <Router>
-    <Navigation />
-  </Router>
-);
 ReactDOM.render(
   <FirebaseContext.Provider value={new Firebase()}>
     <App/>
