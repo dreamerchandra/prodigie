@@ -48,7 +48,7 @@
     <!--================Header Menu Area =================-->
     <header class="main_menu_area">
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#"><img src="img/logo.png" alt=""></a>
+        <a class="navbar-brand" href="index.html"><img src="img/logo.png" alt=""></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span></span>
           <span></span>
@@ -78,6 +78,7 @@
     </header>
     <!--================End Header Menu Area =================-->
     <body>
+      <!-- ==============FEATURE AREA========================== -->
       <div class="banner">
         <div class="tutor-main-content container">
           <div class="row">
@@ -86,86 +87,181 @@
             </div>
             <!-- <div class="col-xs-3 col-lg-3"> We help you learn while helping others learn. Connect with students from various places and earn an impressive income in your part time by sharing your knowledge and experience. </div> -->
             <div class="col-xs-3 col-lg-7">
-              <p>
-                Earn 5k to 25k depending on your part time with Prodigie.
-              </p>
-              <a href="teacher-apply.html">
-                apply now
-              </a>
+              <p id="auto">Apply and Earn</p>
+              <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+              <script type="text/javascript">
+                $(document).ready(function () {
+                  $('#auto').load('load.php');
+                  refresh();
+                });
+
+                function refresh() {
+                  setTimeout(function () {
+                    $('#auto').fadeOut('slow').load('load.php').fadeIn('slow');
+                    refresh();
+                  }, 2000);
+                }
+              </script>
+
+              <link rel="stylesheet" type="text/css" href="https://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css">
+              <script type='text/javascript' src="https://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+              <div
+                class="tp-caption tp-resizeme slider_button"
+                data-x="['center','center','center','center','center','center']"
+                data-hoffset="['0','0','0','0']"
+                data-y="['middle','middle','middle','middle']"
+                data-voffset="['130','130','130','100','100','100']"
+                data-width="none"
+                data-height="none"
+                data-whitespace="nowrap"
+                data-type="text"
+                data-responsive_offset="on"
+                data-frames="[{&quot;delay&quot;:10,&quot;speed&quot;:1500,&quot;frame&quot;:&quot;0&quot;,&quot;from&quot;:&quot;y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;&quot;,&quot;mask&quot;:&quot;x:0px;y:[100%];s:inherit;e:inherit;&quot;,&quot;to&quot;:&quot;o:1;&quot;,&quot;ease&quot;:&quot;Power2.easeInOut&quot;},{&quot;delay&quot;:&quot;wait&quot;,&quot;speed&quot;:1500,&quot;frame&quot;:&quot;999&quot;,&quot;to&quot;:&quot;y:[175%];&quot;,&quot;mask&quot;:&quot;x:inherit;y:inherit;s:inherit;e:inherit;&quot;,&quot;ease&quot;:&quot;Power2.easeInOut&quot;}]"
+                data-textalign="['center','center','center','center','center','center']">
+                <a class="bg_btn" href="form">Apply Now!</a>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <section class="process">
-        <div class="container">
-          <div class="row">
-            <p>Process</p>
+      <!-- ================= END OF FUTURE AREA =============== -->
+
+      <!--=======================PROCESS========================-->
+      <section class="industries_area">
+        <div class="left_indus">
+          <div class="indus_img">
+            <img src="img/indus-laptop.png" alt="">
           </div>
-          <div class="row">
-            <div class="col-lg-6 col-xs-12">
-              <img src="img/computer.png" alt="">
+        </div>
+        <div class="right_indus">
+          <div class="indus_text">
+            <div class="main_title">
+              <h2>Process</h2>
+              <p></p>
             </div>
-            <div class="col-lg-6 col-xs-12">
-              <p>Apply as tutor</p>
+            <div class="our_skill_inner">
+              <div class="single_skill">
+                <h3>Apply as tutor</h3>
+                <div class="progress" data-value="35">
+                  <div class="progress-bar">
+                    <div class="progress_parcent">
+                      <span class="counter">35</span>%</div>
+                  </div>
+                </div>
+              </div>
+              <div class="single_skill">
+                <h3>Give a demo</h3>
+                <div class="progress" data-value="50">
+                  <div class="progress-bar">
+                    <div class="progress_parcent">
+                      <span class="counter">50</span>%</div>
+                  </div>
+                </div>
+              </div>
+              <div class="single_skill">
+                <h3>Attend training</h3>
+                <div class="progress" data-value="75">
+                  <div class="progress-bar">
+                    <div class="progress_parcent">
+                      <span class="counter">75</span>%</div>
+                  </div>
+                </div>
+              </div>
+              <div class="single_skill">
+                <h3>Kick start your Tutoring journey</h3>
+                <div class="progress" data-value="95">
+                  <div class="progress-bar">
+                    <div class="progress_parcent">
+                      <span class="counter">90</span>%</div>
+                  </div>
+                </div>
+              </div>
+              <div class="single_skill">
+                <h3>Earn</h3>
+                <div class="progress" data-value="100">
+                  <div class="progress-bar">
+                    <div class="progress_parcent">
+                      <span class="counter">100</span>%</div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6 col-xs-12">
-              <p>Give a demo</p>
-            </div>
-            <div class="col-lg-6 col-xs-12">
-              <img src="img/demo.png" alt="">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6 col-xs-12">
-              <img src="img/train.png" alt="">
-            </div>
-            <div class="col-lg-6 col-xs-12">
-              <p>Attend training</p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6 col-xs-12">
-              <p>Kick start your Tutoring journey</p>
-            </div>
-            <div class="col-lg-6 col-xs-12">
-              <img src="img/start.png" alt="">
-            </div>
+            <a class="read_btn" href="Contact-us.html">Join Now</a>
           </div>
         </div>
       </section>
-      <section class="way">
-        <p>The Prodigie Way</p>
-        <p>You will be best suited to team up with us if you have the following qualities.</p>
+      <!--==================END OF PROCESS========================-->
+
+      <!-- ===================== THE WAY ========================= -->
+      <section class="latest_news_area p_100" style="background: #f7f7f7">
         <div class="container">
-          <div class="row">
-            <div class="col-xs-12  col-md-6 col-lg-3">
-              <div class="margin">
-                <i class="fas fa-suitcase"></i><br>
-                Dedicated, passionate and have a growth mindset
+          <div class="b_center_title">
+            <h2>The Prodigie Way</h2>
+            <p>You will be best suited to team up with us if you have the following qualities.</p>
+          </div>
+          <div class="l_news_inner">
+            <div class="row">
+              <div class="col-lg-3 col-md-6">
+                <div class="l_news_item">
+                  <div class="l_news_img">
+                    <a href="#"><img class="img-fluid" src="img/blog/l-news/l-news-1.jpg" alt=""></a>
+                  </div>
+                  <div class="l_news_content">
+                    <a href="#">
+                      <h4>The You</h4>
+                    </a>
+                    <p>The Prodigie tutors are dedicated, passionate and have a growth mindset</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6">
+                <div class="l_news_item">
+                  <div class="l_news_img">
+                    <a href="#"><img class="img-fluid" src="img/blog/l-news/l-news-2.jpg" alt=""></a>
+                  </div>
+                  <div class="l_news_content">
+                    <a href="#">
+                      <h4>Professionalism and Approach</h4>
+                    </a>
+                    <p>The Prodigie tutors are highly professional and follow a systematic approach</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6">
+                <div class="l_news_item">
+                  <div class="l_news_img">
+                    <a href="#"><img class="img-fluid" src="img/blog/l-news/l-news-3.jpg" alt=""></a>
+                  </div>
+                  <div class="l_news_content">
+                    <a href="#">
+                      <h4>Student Friendly</h4>
+                    </a>
+                    <p>The Prodigie tutors make their classes interactive and interesting</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6">
+                <div class="l_news_item">
+                  <div class="l_news_img">
+                    <a href="#"><img class="img-fluid" src="img/blog/l-news/l-news-3.jpg" alt=""></a>
+                  </div>
+                  <div class="l_news_content">
+                    <a href="#">
+                      <h4>We starve for excellence</h4>
+                    </a>
+                    <p>The Prodigie tutors follow the system and the quality standards set by the company to ensure top notch user experience</p>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="col-xs-12  col-md-6 col-lg-3">
-              <div class="margin">
-                <i class="fas fa-user-tie"></i><br>
-                Highly professional and follow a systematic approach
-              </div>
-            </div>
-            <div class="col-xs-12  col-md-6 col-lg-3">
-              <div class="margin">
-                <i class="fas fa-chalkboard"></i><br>
-                Interactive and interesting
-              </div>
-            </div>
-            <div class="col-xs-12  col-md-6 col-lg-3">
-              <div class="margin">
-                <i class="fas fa-check"></i><br>
-                System and the quality standards set by the company to ensure top notch user experience</div>
-            </div>
+            <div style="text-align: -webkit-center; padding:0px 0px 30px 0px;">
+              <a class="read_btn" href="Contact-us.html" style="align-self: center">Join Now</a>
+            </div>​
           </div>
         </div>
       </section>
+      <!--================End Prodigie way =================-->
+
     </body>
 
     <!--================Footer Area =================-->

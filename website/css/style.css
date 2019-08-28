@@ -69,7 +69,6 @@ a:hover, a:focus {
 .p0 {
   padding: 0px;
 }
-
 body {
   line-height: 26px;
   font-size: 14px;
@@ -1172,8 +1171,19 @@ i:before {
   border: 1px solid #ebebeb;
   border-top: 0px;
   padding: 30px 35px;
+  height: 300px;
 }
-
+@media (max-width:962px)
+{
+      .l_news_item .l_news_content
+      {
+        height: 190px;
+      }
+      .col-lg-4>aside, .col-md-6>aside
+      {
+        margin: 0px;;
+      }
+}
 .l_news_item .l_news_content h4 {
   font-size: 18px;
   color: #232d37;
@@ -1771,7 +1781,10 @@ i:before {
 .modal-message .modal-dialog .modal-content .modal-header p {
   display: block;
 }
-
+.counter
+{
+  font-size: 14px;
+}
 /* End Contact Success and error Area css
 ============================================================================================ */
 /*---------------------------------------------------- */
@@ -2296,4 +2309,30 @@ span
   {
     height: 850px;
   }
+}
+h1
+{
+  display: none;
+}
+.testin_chandru
+{
+  color:#fff;
+}
+
+
+
+
+/* Apply form */
+.blur-filter {
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+
+}
+#foo
+{
+  width: 200px;
+  margin: auto;
 }
