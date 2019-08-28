@@ -8,6 +8,7 @@ import useEffects from './Effects';
 import { TEACHER } from '../../../constants/Constants';
 import FormController from "./FormController";
 import FormContent from "./FormContent";
+import arrow from '../../../Assert/arrow.png';
 
 
 const Title = () => (
@@ -49,19 +50,21 @@ function FormBase({ user }) {
   const classes = useEffects();
   const [activeStep, setActiveStep] = useState(0);
   const [formsCompleted, setFormsCompleted] = useReducer(reducer, initialFormState, initForm);
-
   return (<Fragment>
     <CssBaseline />
     <AppBar />
     <main className={classes.layout}>
-      <Paper className={classes.paper}>
+      {!user && <div>
+        <img src={arrow}/>
+      </div>}
+      {user && <Paper className={classes.paper}>
         <Title />
         <StepperComponent activeStep={activeStep} className={classes.stepper} />
         <Fragment>
           <FormContent activeStep={activeStep} titles={TEACHER.FORM.STEPS_TITLE} formInfo={{ setFormsCompleted, formsCompleted }} />
           <FormController controller={{ setActiveStep, activeStep }} className={classes} steps={TEACHER.FORM.STEPS} formsCompleted={formsCompleted} />
         </Fragment>
-      </Paper>
+      </Paper>}
     </main>
     <Footer />
   </Fragment>)
