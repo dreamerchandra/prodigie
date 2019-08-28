@@ -1,21 +1,21 @@
-import React, { Fragment, memo, Component, useState, useEffect } from 'react';
-import { Typography, Grid, TextField, FormLabel, RadioGroup, FormControlLabel, Radio, TextareaAutosize } from '@material-ui/core';
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
+import { Button, Checkbox, FormControlLabel, FormGroup, FormLabel, Grid, List, Radio, RadioGroup, TextField, Typography } from '@material-ui/core';
+import React, { Fragment, memo, useEffect, useState } from 'react';
 import { compose } from 'recompose';
 import { withFirebaseAuth } from '../../../contextProviders/FirebaseUser';
 
-const state = {
-  university: '',
+
+const initState = {
   degreeStatus: 'completed',
-  completion: 0,
-  languages: {},
-  aboutMe: '',
+  university: '',
+  completion: '',
+  language: [{  //TODO: old school format langue need to refactored 
+    name: 'English',
+    ability: ['write'] 
+  }],
 };
-
-function QualificationForm({ title, setFormsCompleted, activeStep }) {
-  const [formInfo, setFormInfo] = useState(state);
-
+const languageOptions = ['Speak', 'Write', 'Speak and Write'];
+function useFormController(setFormsCompleted, activeStep) {
+  const [formInfo, setFormInfo] = useState(initState);
   useEffect(() => {
     const { university, degreeStatus, completion, languages, aboutMe } = formInfo;
     if (university && degreeStatus && completion && languages && aboutMe) {
@@ -24,6 +24,117 @@ function QualificationForm({ title, setFormsCompleted, activeStep }) {
       setFormsCompleted({ type: activeStep, isCompleted: false });
     }
   }, [formInfo]);
+  function onChangeInput(event) {
+    if (event.target.name.startsWith('language')) {
+      const index = event.target.name.split('::')[1];
+      const lang = formInfo.language;
+      const rest = lang[index];
+      lang[index] = { ...rest, name: event.target.value };
+      setFormInfo({ ...formInfo, language: lang });
+      console.log(formInfo.language);
+      return;
+    }
+    console.log(event.target.name, event.target.name.startsWith('ability'), event.currentTarget.getAttribute('name'));
+    if (event.currentTarget.getAttribute('name').startsWith('ability')) {
+      const index = event.target.name.split('::')[1];
+      const lang = formInfo.language;
+      const rest = lang[index];
+      let ability = rest ? (rest.ability || []) : [];
+      if (ability.includes(event.target.value)) {
+        ability = ability.filter((ele) => ele != event.target.value);
+      } else {
+        ability.push(event.target.value);
+      }
+      lang[index] = { ...rest, ability };
+      setFormInfo({ ...formInfo, language: lang });
+      console.log(formInfo.language);
+      return;
+    }
+    setFormInfo({ ...formInfo, [event.target.name]: event.target.value });
+  }
+  function addNewLanguage() {
+    console.log(formInfo);
+    setFormInfo({
+      ...formInfo, language: formInfo.language.push({
+        name: '',
+        ability: [],
+      })
+    });
+  }
+  return [formInfo, onChangeInput, addNewLanguage];
+}
+
+//TODO: LanguageComponent is not working as expected so it has be changed 
+const LanguageComponent = ({ index, onChangeInput, formInfo }) =>
+  <>
+    <FormLabel component="legend" margin="normal">Languages Knwon</FormLabel>
+    <Grid container spacing={3}>
+      <Grid item xs={12} sm={6}>
+        <TextField
+          required
+          id="language"
+          name={`language::${index}`}
+          placeholder='English'
+          margin="normal"
+          label="Language"
+          value={formInfo.language[index].name}
+          onChange={onChangeInput} />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormGroup aria-label="position" name={`ability::${index}`} onChange={onChangeInput} row>
+          <FormControlLabel
+            control={
+              <Checkbox
+                value="write"
+                checked={formInfo.language[index].ability.includes('write')}
+                color="primary"
+              />
+            }
+            labelPlacement="top"
+            label="Write"
+            name={`write::${index}`}
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                value="read"
+                color="primary"
+                checked={formInfo.language[index].ability.includes('read')}
+              />
+            }
+            labelPlacement="top"
+            label="Read"
+            name={`read::${index}`}
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                value="Speak"
+                color="primary"
+                checked={formInfo.language[index].ability.includes('speak')}
+              />
+            }
+            labelPlacement="top"
+            label="Speak"
+            name={`speak::${index}`}
+          />
+        </FormGroup>
+      </Grid>
+    </Grid>
+  </>
+
+function QualificationForm({ title, setFormsCompleted, activeStep }) {
+  const [formInfo, onChangeInput, addNewLanguage] = useFormController(setFormsCompleted, activeStep);
+  const [numOfLanguage, addNumOfLan] = useState(1);
+  const [languageComponent, addLanguageListComponent] = useState([]);
+  useEffect(() => {
+    let component = [];
+    addNewLanguage();
+    for (let i = 0; i < numOfLanguage; i++) {
+      component.push(<List key={i}><LanguageComponent index={i} onChangeInput={onChangeInput} formInfo={formInfo} /></List>)
+    }
+    addLanguageListComponent(component);
+  }, [numOfLanguage]);
 
   return (
     <Fragment>
@@ -41,8 +152,7 @@ function QualificationForm({ title, setFormsCompleted, activeStep }) {
             fullWidth
             autoComplete="university"
             value={formInfo.university}
-            onChange={(event) => setFormInfo({ ...formInfo, university: event.target.value })}
-          />
+            onChange={onChangeInput} />
         </Grid>
         <Grid item xs={12}>
           <FormLabel component="legend">Degree Status</FormLabel>
@@ -50,9 +160,8 @@ function QualificationForm({ title, setFormsCompleted, activeStep }) {
             aria-label="degreeStatus"
             name="degreeStatus"
             defaultValue={formInfo.degreeStatus}
-            row
             margin="normal"
-            onChange={(event) => setFormInfo({ ...formInfo, degreeStatus: event.target.value })}>
+            onChange={onChangeInput}>
             <FormControlLabel value="completed" control={<Radio />} label="Completed" />
             <FormControlLabel value="pursuing" control={<Radio />} label="Currently Pursuing" />
           </RadioGroup>
@@ -63,12 +172,10 @@ function QualificationForm({ title, setFormsCompleted, activeStep }) {
             id="completion"
             type={"number"}
             name="completion"
-            fullWidth
             label="Completion Year"
             value={formInfo.completion}
             margin="normal"
-            onChange={(event) => setFormInfo({ ...formInfo, age: event.target.value })}
-          />
+            onChange={onChangeInput} />
         </Grid>
         <Grid item xs={12}>
           <TextField
@@ -84,8 +191,11 @@ function QualificationForm({ title, setFormsCompleted, activeStep }) {
             autoComplete="aboutMe"
             placeholder="I'm good at ...."
             value={formInfo.aboutMe}
-            onChange={(event) => setFormInfo({ ...formInfo, aboutMe: event.target.value })}
-          />
+            onChange={onChangeInput} />
+        </Grid>
+        <Grid item xs={12}>
+          {languageComponent}
+          <Button color="primary" margin="normal" onClick={() => addNumOfLan(numOfLanguage + 1)}>Add Language</Button>
         </Grid>
       </Grid>
     </Fragment>
