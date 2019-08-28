@@ -1,26 +1,19 @@
 import DateFnsUtils from '@date-io/date-fns';
-import { FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Typography } from '@material-ui/core';
+import { FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Typography, InputAdornment } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import React, { Fragment, memo, useEffect, useState } from 'react';
 import { compose } from 'recompose';
 import { withFirebaseAuth } from '../../../contextProviders/FirebaseUser';
 
-const state = {
+const initState = {
   name: '',
   gender: 'male',
-  dob: undefined,
-  age: 0,
-  phoneNumber: '',
-  city: '',
-  locality: '',
-  state: '',
-  address: '',
-  pincode: '',
-  aboutMe: '',
+  age: 0
 };
+const isDateValid = (date) => date instanceof Date && !isNaN(date)
 
-function PersonalForm({ user, title, setFormsCompleted, activeStep }) {
-  const [formInfo, setFormInfo] = useState(state);
+function useFormController(user, setFormsCompleted, activeStep) {
+  const [formInfo, setFormInfo] = useState(initState);
   useEffect(() => {
     setFormInfo((formInfo) => {
       return ({
@@ -48,11 +41,24 @@ function PersonalForm({ user, title, setFormsCompleted, activeStep }) {
   useEffect(() => {
     const { name, gender, dob, phoneNumber, city, locality, state, pincode, aboutMe } = formInfo;
     if (name && gender && dob && phoneNumber && city && locality && state && pincode && aboutMe) {
+      console.log(formInfo);
       setFormsCompleted({ type: activeStep, isCompleted: true });
     } else {
       setFormsCompleted({ type: activeStep, isCompleted: false });
     }
   }, [formInfo]);
+  function onChangeInput(event) {
+    if (event.target.name === 'dob' && !isDateValid(event.target.value)) {
+      event.target.value = '';
+    }
+    setFormInfo({ ...formInfo, [event.target.name]: event.target.value });
+  }
+  return [formInfo, onChangeInput];
+}
+
+
+function PersonalForm({ user, title, setFormsCompleted, activeStep }) {
+  const [formInfo, onChangeInput] = useFormController(user, setFormsCompleted, activeStep);
   return (
     <Fragment>
       <Typography variant="h6" gutterBottom>
@@ -68,20 +74,19 @@ function PersonalForm({ user, title, setFormsCompleted, activeStep }) {
             label="Full Name"
             fullWidth
             autoComplete="name"
-            placeholder='hello'
             value={formInfo.name}
-            onChange={(event) => setFormInfo({ ...formInfo, name: event.target.value })}
+            onChange={onChangeInput}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormLabel component="legend" margin="normal">Gender</FormLabel>
           <RadioGroup
             aria-label="gender"
-            name="gender1"
+            name="gender"
             defaultValue={formInfo.gender}
             row
             margin="normal"
-            onChange={(event) => setFormInfo({ ...formInfo, gender: event.target.value })}>
+            onChange={onChangeInput}>
             <FormControlLabel value="male" control={<Radio />} label="Male" margin="normal"/>
             <FormControlLabel value="female" control={<Radio />} label="Female" margin="normal"/>
           </RadioGroup>
@@ -94,9 +99,11 @@ function PersonalForm({ user, title, setFormsCompleted, activeStep }) {
               fullWidth
               margin="normal"
               id="date-picker"
+              name='dob'
               value={formInfo.dob}
+              maxDate = {new Date()}
               label="Date Of Birth"
-              onChange={(date) => setFormInfo({ ...formInfo, dob: date })}
+              onChange={(date) => onChangeInput({ target: { name: 'dob', value: date } })}
               KeyboardButtonProps={{
                 'aria-label': 'change date',
               }}
@@ -114,8 +121,7 @@ function PersonalForm({ user, title, setFormsCompleted, activeStep }) {
             autoComplete="age"
             value={formInfo.age}
             margin="normal"
-            onChange={(event) => setFormInfo({ ...formInfo, age: event.target.value })}
-          />
+            onChange={onChangeInput}/>
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -127,8 +133,10 @@ function PersonalForm({ user, title, setFormsCompleted, activeStep }) {
             fullWidth
             type={"number"}
             autoComplete="phone"
-            onChange={(event) => setFormInfo({ ...formInfo, phoneNumber: event.target.value })}
-          />
+            onChange={onChangeInput}
+            InputProps={{
+              startAdornment: <InputAdornment position="start">+91</InputAdornment>,
+            }}/>
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -151,8 +159,7 @@ function PersonalForm({ user, title, setFormsCompleted, activeStep }) {
             fullWidth
             autoComplete="city"
             placeholder="Chennai"
-            onChange={(event) => setFormInfo({ ...formInfo, city: event.target.value })}
-          />
+            onChange={onChangeInput}/>
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -164,8 +171,7 @@ function PersonalForm({ user, title, setFormsCompleted, activeStep }) {
             fullWidth
             autoComplete="locality"
             placeholder="Tambaram"
-            onChange={(event) => setFormInfo({ ...formInfo, locality: event.target.value })}
-          />
+            onChange={onChangeInput}/>
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -177,8 +183,7 @@ function PersonalForm({ user, title, setFormsCompleted, activeStep }) {
             fullWidth
             autoComplete="state"
             placeholder="Tamil Nadu"
-            onChange={(event) => setFormInfo({ ...formInfo, state: event.target.value })}
-          />
+            onChange={onChangeInput}/>
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -190,8 +195,7 @@ function PersonalForm({ user, title, setFormsCompleted, activeStep }) {
             fullWidth
             autoComplete="pincode"
             placeholder="600045"
-            onChange={(event) => setFormInfo({ ...formInfo, pincode: event.target.value })}
-          />
+            onChange={onChangeInput}/>
         </Grid>
         <Grid item xs={12}>
           <TextField
@@ -207,8 +211,7 @@ function PersonalForm({ user, title, setFormsCompleted, activeStep }) {
             autoComplete="address"
             value={formInfo.address}
             placeholder="Full address"
-            onChange={(event) => setFormInfo({ ...formInfo, address: event.target.value })}
-          />
+            onChange={onChangeInput}/>
         </Grid>
         <Grid item xs={12}>
           <TextField
@@ -224,8 +227,7 @@ function PersonalForm({ user, title, setFormsCompleted, activeStep }) {
             value={formInfo.aboutMe}
             autoComplete="aboutMe"
             placeholder="I'm good at ...."
-            onChange={(event) => setFormInfo({ ...formInfo, aboutMe: event.target.value })}
-          />
+            onChange={onChangeInput}/>
         </Grid>
       </Grid>
     </Fragment>
